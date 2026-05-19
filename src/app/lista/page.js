@@ -2,6 +2,7 @@
 
 import styles from "./page.module.css";
 import {useState} from "react";
+import AddToTaskListComponent from "@/app/lista/AddToTaskListComponent";
 
 export default function Lista() {
     /*
@@ -11,7 +12,8 @@ export default function Lista() {
     const [lista, setLista] = useState([]);
 
     /*
-        Funções
+        Função para adicionar texto do input(ligado a uma variável de estado)
+            à lista de tarefas(varíavel de estado)
      */
     const handleButtonClick = () => {
         if(inputTexto != null && inputTexto !=""){
@@ -62,16 +64,10 @@ export default function Lista() {
             <h2 style={{color: 'lightcyan'}}>Lista de tarefas</h2>
             <div className={styles.displayFlex}>
                 <label>Escreve no input a tarefa que queres realizar</label>
-                <div className={styles.divInputBtn}>
-                    <input value={inputTexto}
-                           onChange={
-                            (e)=>
-                            {setInputTexto(e.target.value)}
-                    }
-                           className={styles.inputLista}/>
-                    <button onClick={()=>{handleButtonClick();}}
-                            className={styles.botaoLista}>Adiciona à lista de tarefas</button>
-                </div>
+
+                <AddToTaskListComponent inputTextoParam={inputTexto} setInputTextoParam={setInputTexto}
+                                        handleButtonClickParam={handleButtonClick}></AddToTaskListComponent>
+
                     {lista.map((valor, indice)=> {
 
                         return <div className={styles.itemLista} key={indice+valor}>

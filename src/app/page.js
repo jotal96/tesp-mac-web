@@ -2,6 +2,7 @@
 
 import styles from "./page.module.css";
 import {useState} from "react";
+import AddToTaskListComponent from "./lista/AddToTaskListComponent";
 
 /*
     TODO
@@ -15,6 +16,7 @@ export default function Home() {
     // variável de estado
     const [name, setName] = useState("mundo!");
     const [input, setInput] = useState("");
+    const [inputComponent, setInputComponent] = useState("");
 
     // função
     const atualizaMensagemOla =
@@ -37,6 +39,12 @@ export default function Home() {
 
           <input value={input}
                  onChange={(evt) => setInput(evt.target.value)} />
+
+
+          <AddToTaskListComponent inputTextoParam={inputComponent} setInputTextoParam={setInputComponent}
+                                  handleButtonClickParam={()=>{
+                                      alert(inputComponent)
+                                  }}></AddToTaskListComponent>
       </main>
     </div>
   );
