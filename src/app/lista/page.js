@@ -41,6 +41,21 @@ export default function Lista() {
         setLista(copiaLista);
     }
 
+    /*
+        Função para editar a tarefa,
+        dado o ID e o VALOR
+     */
+    const handleEditTask = (idTask, taskValue) => {
+        // copio a variavel de estado
+        var copiaLista = [...lista];
+
+        // atualizar o valor
+        copiaLista[idTask] = taskValue;
+
+        // por fim sempre atualizar a variavel do estado
+        setLista(copiaLista);
+    }
+
 
     return <div>
         <main>
@@ -61,9 +76,18 @@ export default function Lista() {
 
                         return <div className={styles.itemLista} key={indice+valor}>
                             <p>{indice}: {valor}</p>
-                            <button onClick={()=>{
-                                handleDeleteTask(indice);
-                            }}>❌</button>
+                            <div>
+                                <button onClick={()=>{
+                                    var res = prompt("Insira o valor para atualizar");
+                                    if(res != null && res !="") {
+                                        handleEditTask(indice, res);
+                                    }
+                                }}>✍️</button>
+                                <button onClick={()=>{
+                                    handleDeleteTask(indice);
+                                }}>❌</button>
+                            </div>
+
                         </div>;
                     })}
             </div>
