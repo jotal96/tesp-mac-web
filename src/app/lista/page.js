@@ -14,12 +14,17 @@ export default function Lista() {
         Funções
      */
     const handleButtonClick = () => {
-        // copio a variavel de estado
-        var copiaLista = [...lista];
-        // atualizo a copia da lista
-        copiaLista.push(inputTexto);
-        // por fim atualizo a lista
-        setLista(copiaLista);
+        if(inputTexto != null && inputTexto !=""){
+            // copio a variavel de estado
+            var copiaLista = [...lista];
+            // atualizo a copia da lista
+            copiaLista.push(inputTexto);
+            // por fim atualizo a lista
+            setLista(copiaLista);
+
+            // limpa o input onde o utilizador escreve
+            setInputTexto("");
+        }
     }
 
 
@@ -38,8 +43,8 @@ export default function Lista() {
                     <button onClick={()=>{handleButtonClick();}}
                             className={styles.botaoLista}>Adiciona à lista de tarefas</button>
                 </div>
-                    {lista.map((entrada)=> {
-                        return <p>{entrada}</p>;
+                    {lista.map((entrada, i)=> {
+                        return <p>{i}: {entrada}</p>;
                     })}
             </div>
         </main>
