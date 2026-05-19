@@ -110,3 +110,9 @@
     cursor: not-allowed;
     transform: none;
 }
+
+.itemLista{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}

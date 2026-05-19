@@ -27,6 +27,20 @@ export default function Lista() {
         }
     }
 
+    /*
+        Função para apagar tarefa da lista dado o ID
+     */
+    const handleDeleteTask = (idTask) => {
+        // copio a variavel de estado
+        var copiaLista = [...lista];
+
+        // remove da lista o indice
+        copiaLista.splice(idTask, 1);
+
+        // por fim atualizo a lista
+        setLista(copiaLista);
+    }
+
 
     return <div>
         <main>
@@ -43,8 +57,14 @@ export default function Lista() {
                     <button onClick={()=>{handleButtonClick();}}
                             className={styles.botaoLista}>Adiciona à lista de tarefas</button>
                 </div>
-                    {lista.map((entrada, i)=> {
-                        return <p>{i}: {entrada}</p>;
+                    {lista.map((valor, indice)=> {
+
+                        return <div className={styles.itemLista} key={indice+valor}>
+                            <p>{indice}: {valor}</p>
+                            <button onClick={()=>{
+                                handleDeleteTask(indice);
+                            }}>❌</button>
+                        </div>;
                     })}
             </div>
         </main>
