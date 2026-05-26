@@ -1,8 +1,9 @@
 'use client'
 
 import styles from "./page.module.css";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import AddToTaskListComponent from "@/app/lista/AddToTaskListComponent";
+import {fetchLista} from "@/api/api";
 
 export default function Lista() {
     /*
@@ -12,11 +13,32 @@ export default function Lista() {
     const [lista, setLista] = useState([]);
 
     /*
+        Use Effect
+     */
+    useEffect(async () => {
+        try {
+            let dadosDoServidor = await fetchLista();
+            let tarefasDoServidor = dadosDoServidor.data.map((elem, index)=>{
+                return elem.DescricaoTarefa;
+            });
+
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setLista(tarefasDoServidor);
+
+        }catch (err){
+            alert("Erro a buscar lista de tarefas do servidor")
+            console.log(err);
+        }
+
+    }, []);
+
+
+    /*
         Função para adicionar texto do input(ligado a uma variável de estado)
             à lista de tarefas(varíavel de estado)
      */
     const handleButtonClick = () => {
-        if(inputTexto != null && inputTexto !=""){
+        if (inputTexto != null && inputTexto != "") {
             // copio a variavel de estado
             var copiaLista = [...lista];
             // atualizo a copia da lista
@@ -68,24 +90,26 @@ export default function Lista() {
                 <AddToTaskListComponent inputTextoParam={inputTexto} setInputTextoParam={setInputTexto}
                                         handleButtonClickParam={handleButtonClick}></AddToTaskListComponent>
 
-                    {lista.map((valor, indice)=> {
+                {lista.map((valor, indice) => {
 
-                        return <div className={styles.itemLista} key={indice+valor}>
-                            <p>{indice}: {valor}</p>
-                            <div>
-                                <button onClick={()=>{
-                                    var res = prompt("Insira o valor para atualizar");
-                                    if(res != null && res !="") {
-                                        handleEditTask(indice, res);
-                                    }
-                                }}>✍️</button>
-                                <button onClick={()=>{
-                                    handleDeleteTask(indice);
-                                }}>❌</button>
-                            </div>
+                    return <div className={styles.itemLista} key={indice + valor}>
+                        <p>{indice}: {valor}</p>
+                        <div>
+                            <button onClick={() => {
+                                var res = prompt("Insira o valor para atualizar");
+                                if (res != null && res != "") {
+                                    handleEditTask(indice, res);
+                                }
+                            }}>✍️
+                            </button>
+                            <button onClick={() => {
+                                handleDeleteTask(indice);
+                            }}>❌
+                            </button>
+                        </div>
 
-                        </div>;
-                    })}
+                    </div>;
+                })}
             </div>
         </main>
     </div>;
