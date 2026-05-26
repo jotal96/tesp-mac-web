@@ -15,6 +15,28 @@ export async function fetchLista(){
      }
 }
 
+export async function createTarefa(textoTarefa){
+    let headerResponse = await fetch('http://localhost:1337/api/tarefas', {
+        method: 'POST',
+        headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'data': {
+                'DescricaoTarefa': textoTarefa
+            }
+        })
+    });
+
+    if(headerResponse.status==201){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 /*
 NAO BLOQUEANTE FETCH
 

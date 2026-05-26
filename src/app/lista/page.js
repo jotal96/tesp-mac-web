@@ -3,7 +3,7 @@
 import styles from "./page.module.css";
 import {useEffect, useState} from "react";
 import AddToTaskListComponent from "@/app/lista/AddToTaskListComponent";
-import {fetchLista} from "@/api/api";
+import {createTarefa, fetchLista} from "@/api/api";
 
 export default function Lista() {
     /*
@@ -12,19 +12,23 @@ export default function Lista() {
     const [inputTexto, setInputTexto] = useState("");
     const [lista, setLista] = useState([]);
 
+    const getTarefasFromServidor = async () => {
+        let dadosDoServidor = await fetchLista();
+        let tarefasDoServidor = dadosDoServidor.data.map((elem, index)=>{
+            return elem.DescricaoTarefa;
+        });
+
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setLista(tarefasDoServidor);
+    }
+
     /*
         Use Effect
      */
     useEffect(async () => {
         try {
-            let dadosDoServidor = await fetchLista();
-            let tarefasDoServidor = dadosDoServidor.data.map((elem, index)=>{
-                return elem.DescricaoTarefa;
-            });
-
             // eslint-disable-next-line react-hooks/set-state-in-effect
-            setLista(tarefasDoServidor);
-
+            await getTarefasFromServidor();
         }catch (err){
             alert("Erro a buscar lista de tarefas do servidor")
             console.log(err);
@@ -33,12 +37,14 @@ export default function Lista() {
     }, []);
 
 
+
     /*
         Função para adicionar texto do input(ligado a uma variável de estado)
             à lista de tarefas(varíavel de estado)
      */
-    const handleButtonClick = () => {
+    const handleButtonClick = async () => {
         if (inputTexto != null && inputTexto != "") {
+            /*
             // copio a variavel de estado
             var copiaLista = [...lista];
             // atualizo a copia da lista
@@ -48,6 +54,20 @@ export default function Lista() {
 
             // limpa o input onde o utilizador escreve
             setInputTexto("");
+            */
+            try {
+                let resposta = await createTarefa(inputTexto);
+                if(resposta){
+                    alert("A tarefa foi inserida com sucesso");
+
+                    await getTarefasFromServidor();
+                }else{
+                    alert("A tarefa não foi inserida");
+                }
+            }catch (err){
+                alert("Erro a inserir tarefa no servidor")
+                console.log(err);
+            }
         }
     }
 
