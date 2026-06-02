@@ -6,12 +6,16 @@ import AddToTaskListComponent from "@/app/lista/AddToTaskListComponent";
 import {createTarefa, deleteTarefa, fetchLista} from "@/api/api";
 import TaskListItem from "@/app/lista/TaskListItem";
 
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
 export default function Lista() {
     /*
         Variáveis de estado
      */
     const [inputTexto, setInputTexto] = useState("");
     const [lista, setLista] = useState([]);
+    const [taskToEdit, setTaskToEdit] = useState(null);
 
     const getTarefasFromServidor = async () => {
         let dadosDoServidor = await fetchLista();
@@ -97,8 +101,9 @@ export default function Lista() {
         Função para editar a tarefa,
         dado o ID e o VALOR
      */
-    const handleEditTask = (idTask, taskValue) => {
+    const handleEditTask = (task) => {
         // copio a variavel de estado
+        /*
         var copiaLista = [...lista];
 
         // atualizar o valor
@@ -106,8 +111,16 @@ export default function Lista() {
 
         // por fim sempre atualizar a variavel do estado
         setLista(copiaLista);
+         */
+
+        setTaskToEdit(task);
     }
 
+    useEffect(() => {
+        console.log(taskToEdit);
+    }, [taskToEdit]);
+
+    const handleClose = () => setTaskToEdit(null);
 
     return <div>
         <main>
@@ -118,13 +131,35 @@ export default function Lista() {
                 <AddToTaskListComponent inputTextoParam={inputTexto} setInputTextoParam={setInputTexto}
                                         handleButtonClickParam={handleInsertClick}></AddToTaskListComponent>
 
-                {lista.map((valor, indice) => {
+                {lista.map((tarefaObj, indice) => {
 
-                    return <TaskListItem key={valor.id} valor={valor} indice={indice}
+                    return <TaskListItem key={tarefaObj.id} tarefa={tarefaObj} indice={indice}
                                          handleDelete={handleDeleteTask} handleEdit={handleEditTask}>
 
                     </TaskListItem>;
                 })}
+
+                <>
+                    <Modal show={taskToEdit!=null} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Está a editar a tarefa com id {
+                                taskToEdit!=null ?
+                                    taskToEdit.id
+                                    :
+                                    ""
+                            }</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                            <Button variant="primary" onClick={handleClose}>
+                                Save Changes
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </>
             </div>
         </main>
     </div>;
