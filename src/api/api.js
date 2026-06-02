@@ -37,6 +37,22 @@ export async function createTarefa(textoTarefa){
     }
 }
 
+export async function deleteTarefa(documentId){
+    let headerResponse = await fetch('http://localhost:1337/api/tarefas/'+documentId, {
+        method: 'DELETE',
+        headers: {
+            'accept': 'application/json'
+        }
+    });
+
+    if(headerResponse.status==204){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 /*
 NAO BLOQUEANTE FETCH
 

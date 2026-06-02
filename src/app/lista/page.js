@@ -3,7 +3,8 @@
 import styles from "./page.module.css";
 import {useEffect, useState} from "react";
 import AddToTaskListComponent from "@/app/lista/AddToTaskListComponent";
-import {createTarefa, fetchLista} from "@/api/api";
+import {createTarefa, deleteTarefa, fetchLista} from "@/api/api";
+import TaskListItem from "@/app/lista/TaskListItem";
 
 export default function Lista() {
     /*
@@ -14,12 +15,9 @@ export default function Lista() {
 
     const getTarefasFromServidor = async () => {
         let dadosDoServidor = await fetchLista();
-        let tarefasDoServidor = dadosDoServidor.data.map((elem, index)=>{
-            return elem.DescricaoTarefa;
-        });
 
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        setLista(tarefasDoServidor);
+        setLista(dadosDoServidor.data);
     }
 
     /*
@@ -42,7 +40,7 @@ export default function Lista() {
         Função para adicionar texto do input(ligado a uma variável de estado)
             à lista de tarefas(varíavel de estado)
      */
-    const handleButtonClick = async () => {
+    const handleInsertClick = async () => {
         if (inputTexto != null && inputTexto != "") {
             /*
             // copio a variavel de estado
@@ -74,8 +72,9 @@ export default function Lista() {
     /*
         Função para apagar tarefa da lista dado o ID
      */
-    const handleDeleteTask = (idTask) => {
+    const handleDeleteTask = async (documentId) => {
         // copio a variavel de estado
+        /*
         var copiaLista = [...lista];
 
         // remove da lista o indice
@@ -83,6 +82,15 @@ export default function Lista() {
 
         // por fim atualizo a lista
         setLista(copiaLista);
+        */
+
+        let success = await deleteTarefa(documentId);
+
+        if(success){
+            await getTarefasFromServidor();
+        }else{
+            alert("Erro ao apagar tarefa "+idTask);
+        }
     }
 
     /*
@@ -108,27 +116,14 @@ export default function Lista() {
                 <label>Escreve no input a tarefa que queres realizar</label>
 
                 <AddToTaskListComponent inputTextoParam={inputTexto} setInputTextoParam={setInputTexto}
-                                        handleButtonClickParam={handleButtonClick}></AddToTaskListComponent>
+                                        handleButtonClickParam={handleInsertClick}></AddToTaskListComponent>
 
                 {lista.map((valor, indice) => {
 
-                    return <div className={styles.itemLista} key={indice + valor}>
-                        <p>{indice}: {valor}</p>
-                        <div>
-                            <button onClick={() => {
-                                var res = prompt("Insira o valor para atualizar");
-                                if (res != null && res != "") {
-                                    handleEditTask(indice, res);
-                                }
-                            }}>✍️
-                            </button>
-                            <button onClick={() => {
-                                handleDeleteTask(indice);
-                            }}>❌
-                            </button>
-                        </div>
+                    return <TaskListItem key={valor.id} valor={valor} indice={indice}
+                                         handleDelete={handleDeleteTask} handleEdit={handleEditTask}>
 
-                    </div>;
+                    </TaskListItem>;
                 })}
             </div>
         </main>
