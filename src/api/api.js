@@ -53,6 +53,28 @@ export async function deleteTarefa(documentId){
     }
 }
 
+export async function login(username, password){
+    let headerResponse = await fetch('http://localhost:1337/api/auth/local', {
+        method: 'POST',
+        headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        // body: '{\n  "identifier": "foobar",\n  "password": "Test1234"\n}',
+        body: JSON.stringify({
+            'identifier': username,
+            'password': password
+        })
+    });
+    if(headerResponse.status==400){
+        let bodyResponse = await headerResponse.json();
+        throw new Error(bodyResponse.error.message);
+    }else{
+        let bodyResponse = await headerResponse.json();
+        return bodyResponse.jwt;
+    }
+}
+
 /*
 NAO BLOQUEANTE FETCH
 

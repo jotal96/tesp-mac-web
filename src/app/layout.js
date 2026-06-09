@@ -34,9 +34,9 @@ export default function RootLayout({ children }) {
                       <Nav.Link href="/">Home</Nav.Link>
                       <Nav.Link href="/lista">Lista</Nav.Link>
                       <NavDropdown title="Autenticação" id="basic-nav-dropdown">
-                          <NavDropdown.Item href="/login">Login</NavDropdown.Item>
+                          <NavDropdown.Item href="/aut/login">Login</NavDropdown.Item>
                           <NavDropdown.Divider />
-                          <NavDropdown.Item href="/register">
+                          <NavDropdown.Item href="/aut/register">
                               Registo
                           </NavDropdown.Item>
                       </NavDropdown>
