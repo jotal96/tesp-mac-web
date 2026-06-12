@@ -41,7 +41,8 @@ export async function deleteTarefa(documentId){
     let headerResponse = await fetch('http://localhost:1337/api/tarefas/'+documentId, {
         method: 'DELETE',
         headers: {
-            'accept': 'application/json'
+            'accept': 'application/json',
+            'Authorization': `Bearer ${sessionStorage.getItem("jwt")}`
         }
     });
 

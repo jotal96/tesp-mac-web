@@ -87,13 +87,12 @@ export default function Lista() {
         // por fim atualizo a lista
         setLista(copiaLista);
         */
-
         let success = await deleteTarefa(documentId);
 
         if(success){
             await getTarefasFromServidor();
         }else{
-            alert("Erro ao apagar tarefa "+idTask);
+            alert("Erro ao apagar tarefa "+documentId);
         }
     }
 
