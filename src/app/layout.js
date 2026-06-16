@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
               </Navbar.Collapse>
           </Container>
       </Navbar>
-      <div className={'mainPage'}>
+      <div className={'container bg-dark-subtle min-vh-100'}>
       {children}
       </div>
       </body>
