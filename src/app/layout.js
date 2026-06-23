@@ -9,6 +9,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {createContext, useState} from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,9 +21,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const AutContext = createContext(['', ()=>{}]);
 
 export default function RootLayout({ children }) {
-  return (
+
+    const [usernameAut, setUsernameAut] = useState('');
+
+    return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -42,11 +47,15 @@ export default function RootLayout({ children }) {
                       </NavDropdown>
                   </Nav>
               </Navbar.Collapse>
+              <Navbar.Brand>Nome do Utilizador: {usernameAut}</Navbar.Brand>
           </Container>
       </Navbar>
-      <div className={'container bg-dark-subtle min-vh-100'}>
-      {children}
-      </div>
+      <AutContext.Provider value={[usernameAut, setUsernameAut]}>
+          <div className={'container bg-dark-subtle min-vh-100'}>
+              {children}
+          </div>
+      </AutContext.Provider>
+
       </body>
     </html>
   );

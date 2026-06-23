@@ -1,8 +1,9 @@
 'use client'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {login} from "../../../api/api";
+import {AutContext} from "@/app/layout";
 
 
 export default function Login(){
@@ -10,10 +11,14 @@ export default function Login(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    // adição de contexto
+    const [autContext, setAutContext] = useContext(AutContext);
+
     // função quando se clica no botão submit
     const handleSubmit = async () => {
         try {
             let resposta = await login(username, password);
+            setAutContext('Autenticado');
             sessionStorage.setItem("jwt", resposta);
         }catch(err){
             alert("Erro: "+err.message);
