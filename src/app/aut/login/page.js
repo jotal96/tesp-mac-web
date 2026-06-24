@@ -18,7 +18,10 @@ export default function Login(){
     const handleSubmit = async () => {
         try {
             let resposta = await login(username, password);
-            setAutContext('Autenticado');
+
+            setAutContext('Valor do Contexto');
+
+            sessionStorage.setItem("NomeUser", "Valor da Sessão");
             sessionStorage.setItem("jwt", resposta);
         }catch(err){
             alert("Erro: "+err.message);

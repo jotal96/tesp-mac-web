@@ -11,6 +11,13 @@ export default function NavBarWeb() {
     // adição de contexto
     const [autContext, setAutContext] = useContext(AutContext);
 
+    if(!autContext){
+        let valorDaSessao = sessionStorage.getItem("NomeUser");
+        if(valorDaSessao){
+            setAutContext(valorDaSessao);
+        }
+    }
+
     return <Navbar expand="lg" className="bg-body-tertiary">
         <Container>
             <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
@@ -28,7 +35,7 @@ export default function NavBarWeb() {
                     </NavDropdown>
                 </Nav>
             </Navbar.Collapse>
-            <Navbar.Brand>Nome do Utilizador:{autContext}</Navbar.Brand>
+            <Navbar.Brand>Nome do Utilizador: {autContext}</Navbar.Brand>
         </Container>
     </Navbar>
 }
