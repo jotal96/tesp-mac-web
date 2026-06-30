@@ -1,8 +1,9 @@
 
-
+export const IMG_URL = "http://localhost:1337";
+const API_URL = IMG_URL+ "/api";
 
 export async function fetchLista(){
-     let headerResponse = await fetch("http://localhost:1337/api/tarefas", {
+     let headerResponse = await fetch(API_URL+"/tarefas", {
         headers: {
             Accept: "application/json"
         }
@@ -16,7 +17,7 @@ export async function fetchLista(){
 }
 
 export async function createTarefa(textoTarefa){
-    let headerResponse = await fetch('http://localhost:1337/api/tarefas', {
+    let headerResponse = await fetch(API_URL+ '/tarefas', {
         method: 'POST',
         headers: {
             'accept': 'application/json',
@@ -38,7 +39,7 @@ export async function createTarefa(textoTarefa){
 }
 
 export async function deleteTarefa(documentId){
-    let headerResponse = await fetch('http://localhost:1337/api/tarefas/'+documentId, {
+    let headerResponse = await fetch(API_URL+'/tarefas/'+documentId, {
         method: 'DELETE',
         headers: {
             'accept': 'application/json',
@@ -55,7 +56,7 @@ export async function deleteTarefa(documentId){
 }
 
 export async function login(username, password){
-    let headerResponse = await fetch('http://localhost:1337/api/auth/local', {
+    let headerResponse = await fetch(API_URL+'/auth/local', {
         method: 'POST',
         headers: {
             'accept': 'application/json',
@@ -74,6 +75,21 @@ export async function login(username, password){
         let bodyResponse = await headerResponse.json();
         return bodyResponse.jwt;
     }
+}
+
+export async function getItensMenu(){
+    let headerResponse = await fetch(API_URL+'/items?populate=Foto', {
+        headers: {
+            'accept': 'application/json'
+        }
+    });
+    if(headerResponse.status==200){
+        let bodyResponse = await headerResponse.json();
+        return bodyResponse.data;
+    }else{
+        throw new Error("Erro a obter itens");
+    }
+
 }
 
 /*

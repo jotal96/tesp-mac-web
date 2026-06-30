@@ -1,0 +1,42 @@
+'use client';
+
+import AddToTaskListComponent from "../lista/AddToTaskListComponent";
+import styles from "../page.module.css";
+import {useState} from "react";
+
+export default function Teste(){
+    // variável de estado
+    const [name, setName] = useState("mundo!");
+    const [input, setInput] = useState("");
+    const [inputComponent, setInputComponent] = useState("");
+
+    // função
+    const atualizaMensagemOla =
+        () => { setName(input)}
+
+    return (
+        <div className={styles.page}>
+            <main className={styles.main}>
+                <h2>Olá {name}</h2>
+
+                <button className={styles.btnCust} onClick={
+                    () => {setName("MUNDO!!!!")}
+                }>
+                    Clica em mim ;)
+                </button>
+
+                <button className={styles.btnCust} onClick={atualizaMensagemOla}>
+                    Atualiza mensagem Olá
+                </button>
+
+                <input value={input}
+                       onChange={(evt) => setInput(evt.target.value)} />
+
+
+                <AddToTaskListComponent inputTextoParam={inputComponent} setInputTextoParam={setInputComponent}
+                                        handleButtonClickParam={()=>{
+                                            alert(inputComponent)
+                                        }}></AddToTaskListComponent>
+            </main>
+        </div>);
+}

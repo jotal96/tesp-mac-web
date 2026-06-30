@@ -1,51 +1,17 @@
 'use client';
 
-import styles from "./page.module.css";
-import {useState} from "react";
-import AddToTaskListComponent from "./lista/AddToTaskListComponent";
 
-/*
-    TODO
-    Mensagem Olá só é alterada quando se clica num botão
-    Função do botão é ir buscar o que está no input e colocar na mensagem Olá
 
-    É NECESSÁRIO CRIAR UMA SEGUNDA VARIÁVEL DE ESTADO
- */
+
+
+import {getItensMenu} from "@/api/api";
+import {useEffect} from "react";
 
 export default function Home() {
-    // variável de estado
-    const [name, setName] = useState("mundo!");
-    const [input, setInput] = useState("");
-    const [inputComponent, setInputComponent] = useState("");
+   useEffect(async () => {
+      let dados = await getItensMenu();
+      console.log(dados);
+   }, []);
 
-    // função
-    const atualizaMensagemOla =
-        () => { setName(input)}
-
-    return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <h2>Olá {name}</h2>
-
-          <button className={styles.btnCust} onClick={
-              () => {setName("MUNDO!!!!")}
-          }>
-              Clica em mim ;)
-          </button>
-
-          <button className={styles.btnCust} onClick={atualizaMensagemOla}>
-              Atualiza mensagem Olá
-          </button>
-
-          <input value={input}
-                 onChange={(evt) => setInput(evt.target.value)} />
-
-
-          <AddToTaskListComponent inputTextoParam={inputComponent} setInputTextoParam={setInputComponent}
-                                  handleButtonClickParam={()=>{
-                                      alert(inputComponent)
-                                  }}></AddToTaskListComponent>
-      </main>
-    </div>
-  );
+   return <></>;
 }
